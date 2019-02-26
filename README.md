@@ -1,5 +1,5 @@
 # fablab
-Digital fabrication project
+digital fabrication project
 
 
 authors:
