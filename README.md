@@ -1,5 +1,5 @@
-# fablab
-digital fabrication project
+# candle extinguisher
+principles of digital fabrication 2019 course project
 
 
 authors:
