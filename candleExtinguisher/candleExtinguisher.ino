@@ -13,6 +13,7 @@ int lightLimit;
 // Key variables!
 int waitTime = 8;
 int lightThreshold = 15;
+int inactiveTime = 5;
 
 int loopCounter = 0;
 int inactiveCounter = 0;
@@ -52,7 +53,6 @@ void loop() {
     calibrationRun = false;
   }
 
-  Serial.println(lightAvg);
 
   //turn on device if light level high enough
   if(lightAvg >= lightLimit){
@@ -64,43 +64,36 @@ void loop() {
   //main device logic
   if(deviceActive){
     digitalWrite(ledPin, HIGH);
-    Serial.println("Kynttilä tunnistettu.");
     loopCounter += 1;
 
     //if counter reaches X seconds
     if(loopCounter == waitTime){
 
       //flash led
-      digitalWrite(ledPin, HIGH);
-      delay(100);
-      digitalWrite(ledPin, LOW);
-      delay(100);
-      digitalWrite(ledPin, HIGH);
-      delay(100);
-      digitalWrite(ledPin, LOW);
-      delay(100);
-      digitalWrite(ledPin, HIGH);
-      delay(100);
-
+      for(int i=0; i < 6; i++){
+        digitalWrite(ledPin, HIGH);
+        delay(100);
+        digitalWrite(ledPin, LOW);
+        delay(100);
+      }
+      
       //run servo
-      servo.write(180);
+      servo.write(-90);
       delay(1500);
-      servo.write(0);
+      servo.write(90);
       digitalWrite(ledPin, LOW);
       loopCounter = 0;
       
       }
     } else{
-      
       //wait a bit before resetting counters
+      digitalWrite(ledPin, HIGH);
       delay(200);
       inactiveCounter += 1;
-      Serial.println("Kynttilä sammunut.");
       digitalWrite(ledPin, LOW);
-      if(inactiveCounter == 3){
+      if(inactiveCounter == inactiveTime){
         loopCounter = 0;
         inactiveCounter = 0;
-        Serial.println("Ajastin nollattu.");
       }
   }
   
